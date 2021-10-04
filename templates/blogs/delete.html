@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="w3-container">
+        <h3>Delete</h3>
+        <form method="post">
+            {% csrf_token %}
+            <h3>{{post.post_name}}</h3>
+            <button type="submit">Delete</button>
+        </form>
+
+
+    </div>
+{% endblock %}

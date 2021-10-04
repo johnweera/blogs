@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/light-green.css' %}">
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">    
+    <link rel="stylesheet"href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <style>
+    /* .ql-snow {border:none !important;} */
+    .ql-editor {font-size: 14px;}
+    #id_subject {
+      width:100%;
+    }
+    a:link {
+        text-decoration: none;
+    }
+    </style>
+  </head>
+  <body class="w3-theme-l5">
+
+{% include 'menu.html' %}
+
+    <div class="w3-container">
+        <h3>Creaet Post</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>{{ form.post_name }}</p>
+  
+            <!-- Create the editor container -->
+            <div id="editor"></div>
+            <p style="display:none;">{{ form.post_detail }}</p>
+            <p><input type="submit" value="Submit" onclick="sendForm()" class="w3-button w3-theme"> or <button class="w3-button w3-red"><a href="">Cancel</a></button></p>
+        </form>
+    </div>
+
+
+
+    <!-- Initialize Quill editor -->
+    <script>
+      hljs.configure({   // optionally configure hljs
+        languages: ['javascript','python', 'html', 'bash', 'markdown', 'css', 'shell', 'sql', 'sql']
+      });
+
+      var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],['link','image'],
+
+        [{ 'header': 1 }, {'header': 2}],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        // [{ 'direction': 'rtl' }],                         // text direction
+
+        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        // [{ 'header': [1, 2, 3, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        // [{ 'font': [] }],
+        [{ 'align': [] }],
+
+        ['clean']                 // remove formatting button
+      ];
+      var quill = new Quill('#editor', {
+        modules: {
+          syntax: true,
+          toolbar: toolbarOptions,
+        },
+        theme: 'snow'
+      });
+
+      function sendForm(){
+          let x = document.getElementsByClassName("ql-editor")[1].innerHTML;
+          let newx = x.replaceAll('&lt;!', '&amp;lt;!').replaceAll('&lt;/', '&amp;lt;/');
+          document.getElementById("editor2").innerHTML = newx;
+        }  
+
+    </script>
+  </body>
+</html>

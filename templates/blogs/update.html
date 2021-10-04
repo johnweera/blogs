@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/light-green.css' %}">
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">    
+    <link rel="stylesheet"href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <style>
+    /* .ql-snow {border:none !important;} */
+    .ql-editor {font-size: 14px;}
+    #id_subject {
+      width:100%;
+    }
+    a:link {
+        text-decoration: none;
+    }
+    </style>
+  </head>
+<body class="w3-theme-l5">
+
+{% include 'menu.html' %}  
+
+    <div class="w3-container">
+        <h3>Edit Post</h3>
+    <div id="detail" style="display:none;">
+    {% autoescape off %}
+        {{post.post_detail}}
+    {% endautoescape %}
+    </div>  
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>{{ form.post_name }}</p>
+        <div id="editor"></div>
+        <p style="display:none;">{{ form.post_detail }}</p>
+
+        <p><input type="submit" value="Update" onclick="sendForm()"> or <a href="{% url 'blogs:delete' post.id %}">Delete</a></p>
+    </form>
+    </div>
+
+
+
+
+    </div>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<script>
+
+let detail = document.getElementById("detail").innerHTML;
+
+document.getElementById('editor').innerHTML = detail;
+
+hljs.configure({   // optionally configure hljs
+languages: ['javascript','python', 'html', 'bash', 'markdown', 'css', 'shell', 'sql']
+});
+
+var toolbarOptions = [
+['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+['blockquote', 'code-block'],['link'],
+
+[{ 'header': 1 }, { 'header': 2 }],               // custom button values
+[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+
+[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+[{ 'direction': 'rtl' }],                         // text direction
+
+[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+[{ 'align': [] }],
+
+['clean']                                         // remove formatting button
+];
+
+var quill = new Quill('#editor', {
+modules: {
+  syntax: true,
+  toolbar: toolbarOptions,
+},
+theme: 'snow'
+});
+
+function sendForm(){
+  let update = document.getElementsByClassName("ql-editor")[1].innerHTML;
+  let newupdate = update.replaceAll('&lt;!', '&amp;lt;!').replaceAll('&lt;/', '&amp;lt;/');
+  document.getElementById("editor2").innerHTML = newupdate;
+}
+
+</script>
+</body>
+</html>
